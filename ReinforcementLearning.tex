@@ -52,9 +52,9 @@ $V^{\pi}(s_t) = r_t + {\gamma} r_{t+1} + {\gamma}^2 r_{t_2} + \dots = \sum\limit
         \While{} forever
             \State wähle einen Zustand $S_t$
             \State ermittle beste Aktion und den Folgezustand
-            \State $s_t = \delta(s_t,\pi^{*}(s_t)))$
+            \IndState $s_(t+1) = \delta(s_t,\pi^{*}(s_t)))$
             \State ersetzte
-            \State $V^{*}(s_t) = r_t + \gamma V^{*}(s_{t+1})$
+            \IndState $V^{*}(s_t) = r_t + \gamma V^{*}(s_{t+1})$
             \EndWhile
     \caption{Value Iteration}
     \end{algorithmic}

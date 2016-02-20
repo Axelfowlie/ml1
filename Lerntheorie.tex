@@ -97,8 +97,12 @@ die höher gewichteten Beispiele richtig zu klassifizieren
 
 \mparagraph{Kaskadierung}
 Verwende eine Kaskade an Entscheidungen anstatt kombinierter Gewichte.
-Erkennt ein Teilerkenner der Kaskade ein Beispiel als Falsch an, stopp. Oder so
-ähnlich.
+Ermöglicht das effiziente Filtern und erkennen von richtigen Beispielen.
+Dafür werden mehrere Schichten verwendet, wobei die Komplexität mit zunehmender
+Schicht steigt. Findet eine Schicht ein negatives Beispiel stoppt die Bearbeitung
+dieses Beispielt. Die nächste Schicht versucht nun fälschlicherweise korrekt
+erkannte Beispiele (false postive) weiter zu filtern usw.
+
 
 \mparagraph{Probably approximately correct learning (PAC)}
 PAC macht eine Aussage über die anzahl der benötigten Stichproben, wenn
@@ -131,6 +135,7 @@ $\{x|h(x) = 0\} \text{ und } \{x|h(x) = 1\}$
 SRM ist die Abwägung zwischen einem einfachen Modell und einem komplexen Modell,
 welches auf den Trainingsdaten besser funktioniert, aber eventuell mehr unter
 Overfitting leidet.
+Minimiere den unten genannten Term.
 
 \mparagraph{Abschätzen des realen Fehlers}
 Der reale Fehler kann durch den empirischen Fehler und die VC-Dimension wie
@@ -153,3 +158,4 @@ wobei gilt:
     \item N ist die Anzahl der Lernbeispiele
     \item $0 \leq \eta \leq 1$
 \end{itemize}
+Dieser Term wird in der Structural Risc Minimization minimiert.
