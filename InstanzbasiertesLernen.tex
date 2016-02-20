@@ -1,0 +1,51 @@
+\chapter{Instanzbasiertes Lernen}
+
+\mparagraph{Lazy Learning}
+Beispiele werden einfach nur abgespeichert. Wenig Rechenzeit, doch mehr
+Anfragen bei Klassifikation. Sollen neue Daten klassifiziert werden, so wird die
+Klasse des ähnlichsten Datensatzes gewählt
+
+\mparagraph{K-Nearest Neighbour}
+Finde $k$ nächsten Nachbarn (euklidische Distanz) zum gesuchten $x_i$ und ordne
+$x_i$ der Klasse der Mehrheit von den $k$ Nachbarn zu
+
+\begin{displaymath}
+f(x_i) \leftarrow \argmax_{v \in V} \sum_{i=1}^k \delta(v,c(x_i))
+\end{displaymath}
+\begin{equation}
+    \delta(a,b) =
+    \begin{cases}
+        1, \text{ falls } a = b \\
+        0, \text{ sonst}
+    \end{cases}
+\end{equation}
+
+Bei gewichtetem k-NN wird $\delta(v,c(x_i))$ mit dem Gewicht $w_i$ multipliziert.
+\begin{displaymath}
+    w_i = \frac{1}{d(x_q,x_i)^2}
+\end{displaymath}
+
+\mparagraph{Case Base Reasoning}
+Ist ans ich kein direkt anwendbarer Algorithmus. Die idee lautet, dass ähnliche,
+bekannte Fälle gesucht werden welche auf den aktuellen Fall übertragen werden
+können.
+\begin{itemize}
+    \item \textbf{Retrieve}: Finde ähnliche Fälle.
+    \begin{itemize}
+        \item Ähnlichkeitsmaß: Euklidische Distanz, Syntaktische Ähnlichkeit,
+        Semantische Ähnlichkeit
+        \item Organisation der Fallbasis: Lineare Liste, Baumstruktur, Graphen,
+        Netze, Indexstrukturen, Datenbanken
+    \end{itemize}
+    \item \textbf{Reuse}: Lösungsadaption
+    \item \textbf{Revise}: Überprüfung, Verbesserung der Lösung.
+    \begin{itemize}
+        \item Evaluierung der Lösung. Überprüfung durch Simulation/in der realen
+        Welt
+        \item Verbessern bzw. reparieren der Lösung. Fehler erkennen und erklären
+        \item potentiell iterativ
+    \end{itemize}
+    \item \textbf{Retain}: Bewahrung der gemachten Erfahrung
+\end{itemize}
+
+Andwendung: CLAVIER, KogniMobil

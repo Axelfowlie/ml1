@@ -1,0 +1,155 @@
+\chapter{Lerntheorie}
+
+\mparagraph{Rasiermesser Prinzip}
+Löse nie ein Problem komplizierter als nötig, denn die einfachste, richtige Erklärung
+ist die Beste.\\
+Von mehreren möglichen Erklärungen für ein und denselben Sachverhalt ist die einfachste
+Theorie allen anderen vorzuziehen. Eine Theorie ist einfach, wenn sie möglichst
+wenige Variablen und Hypothesen enthält und wenn diese in klaren logischen
+Beziehungen zueinander stehen, aus denen der zu erklärende Sachverhalt logisch folgt.
+
+\mparagraph{Definition Lernmaschine}
+\begin{itemize}
+    \item Eine lernende Maschine wird bestimmt durch:
+    \begin{itemize}
+        \item Hypothesenraum ${h_\alpha : \alpha \in A}$
+        \item Lernverfahren: die Methode um $\alpha_{opt}$ mit Hilfe von
+        Lernbeispielen zu finden
+    \end{itemize}
+    \item Das resultierende Entscheidungsmodell $M_{opt}$. Es ist gegeben durch die Auswertung
+    der optimalen Hypothese $h_{opt}$, die durch die lernende(n) Maschine(n) bestimmt wird
+\end{itemize}
+
+\mparagraph{Probleme}
+
+\begin{itemize}
+    \item \textbf{Statistisches Problem}: Das Verfahren betrachtet einen -
+    gemessen an der Menge der Trainigsdaten - ''zu grossen'' Hypothesenraum
+    \item \textbf{Komplexitätsproblem}: Aufgrund der Komplexität des Problems kann
+    das Lernverfahren nicht das Finden einer optimalen Lösung innerhalb des
+    Hypothesenraum garantieren.
+    \item \textbf{Repräsentationsproblem}: Der Hypothesenraum enthält keine ausreichend
+    gute Approximation der Zielfunktion/Konzept etc.
+\end{itemize}
+
+\mparagraph{Overfitting}
+Die Tendenz der Maschine sich beim Lernen auf die Lernbeispiele zu spezialisieren
+(Auswendig lernen). $\rightarrow$ Lernfehler fällt, Testfehler steigt, Generalisierung fällt.\\
+
+\textbf{Lösung}
+\begin{itemize}
+    \item Repräsentative Beispiele
+    \item Lernprozess durch den Verifikationsfehler steuern.
+    \item Richtige Wahl und Suche der optimalen Hypothese $h_a$
+\end{itemize}
+
+
+\mparagraph{Validierung}
+\begin{itemize}
+    \item Crossvalidation
+    \begin{itemize}
+        \item Teile Daten in Lern und Validierungsdaten
+        \item Bestimmte darauf verschiedene Hypothesen (bzw. deren Parameter)
+        \item Berechne jeweils Generalisierung
+        \item wiederhole
+    \end{itemize}
+    \item n-fold-crossvalidation
+    \begin{itemize}
+        \item Zerlege Daten in n-Mengen
+        \item Trainiere auf n-1 Mengen, Teste auf 1 Menge
+        \item Wiederhole
+    \end{itemize}
+    \item Leave One Out
+    \begin{itemize}
+        \item Jeweils ein Beispiel für das Lernen weglassen
+        \item Addiere Fehler für weggelassene Beispiele
+        \item Wiederhole
+    \end{itemize}
+\end{itemize}
+
+\mparagraph{Boosting}
+Kombiniere mehrere schwache Modelle um ein gutes zu bekommen, indem Trainigsbeispiele unterschiedlich
+gewichtet werden.
+\mparagraph{Bagging (Bootstrap aggregating)}
+Kombiniere mehrere schwache Modelle um eine gutes zu bekommen. Dabei bekommt jedes
+schwache Modell nur eine Teilmenge der Trainigsdaten
+
+\mparagraph{AdaBoost (Adaptive Boosting)}
+Lerne einen Klassifikator für die Daten. Finde die fehlerhaft klassifizierten Beispiele
+, erhöhe deren Gewichte und trainieren einen neuen Klassifikator, welcher darauf achtet
+die höher gewichteten Beispiele richtig zu klassifizieren
+
+\begin{algorithm}[H]
+    \begin{algorithmic}
+        \State Begin: $D = {(\vec{x}_1,y_1),\dots,(\vec{x}_n,y_n)}$, $W_1(i) = \frac{1}{n}$ (Gewicht pro Beispiel)
+        \For {k=1 till $k_{max}$}
+        \State Trainiere $M_k$ auf $D_k$ (Anzahl $D_k = n$, Bsp. gewählt ab. von $W_k(i)$)
+        \State $E_k \leftarrow$ emp. Fehler von $M_k$ (gewichtet bez. $W_k(i)$) )
+        \State $\alpha_k \leftarrow \frac{1}{2} \log \frac{1-E_k}{E_k}$
+        \begin{equation}W_{k+1}(i) \leftarrow \frac{W_k(i)}{Z_k}\begin{cases}
+            e^{-\alpha_k}, \text{ wenn } h_k(\vec{x}_i) = y_i \\
+                                                            e^{\alpha_k}, \text{wenn } h_k(\vec{x}_i) \neq y_i
+                                                        \end{cases}\end{equation}
+        \EndFor
+        \caption{AdaBoost}
+    \end{algorithmic}
+\end{algorithm}
+
+\mparagraph{Kaskadierung}
+Verwende eine Kaskade an Entscheidungen anstatt kombinierter Gewichte.
+Erkennt ein Teilerkenner der Kaskade ein Beispiel als Falsch an, stopp. Oder so
+ähnlich.
+
+\mparagraph{Probably approximately correct learning (PAC)}
+PAC macht eine Aussage über die anzahl der benötigten Stichproben, wenn
+man einen bestimmten realen Fehler mit einer frei zu wählenden Wahrscheinlichkeit
+bekommen will.\\\\
+
+Gegeben
+\begin{itemize}
+    \item Eine Menge $X$ von Instanzen der Länge $n$
+    \item ein Konzept $C$
+    \item Ein Hypothesenraum $H$
+    \item eine Lerndatenmenge $D$
+\end{itemize}
+Es kann nun mit einer beliebigen Wahrscheinlichkeit $1-\delta, 0<\delta<\frac{1}{2}$ \\
+eine $\epsilon$ - genaue Hypothese gefunden werden. $E_d(h) \leq \epsilon, 0<\epsilon<\frac{1}{2}$
+
+Die Anzahl der benötigten Lerndaten ist: \\
+$m \geq \frac{1}{\epsilon}(\ln\frac{1}{\delta}+\ln|H|)$ \\
+$\Rightarrow$ je größer die gewünschte Sicherheit, je kleiner der zulässige fehler, je größer
+der Hypothesenraum, desto größer die Anzahl der benötigten Daten.
+
+\mparagraph{Vapnik-Chervonenkis Dimension}
+Die VC Dimension $VC(h_a)$ von $H^\alpha$ ist gleich der maximalen Anzahl von Datenpunkten
+(aus einer Menge $S$) die von $H^\alpha$ beliebig separiert werden können.
+Eien Abbildung (Hypothese) $h$ separiert die Daten aus $S$ wenn durch $h$ zwei Untermengen
+definiert werden:
+$\{x|h(x) = 0\} \text{ und } \{x|h(x) = 1\}$
+
+\mparagraph{Structural Risc Minimization, SRM}
+SRM ist die Abwägung zwischen einem einfachen Modell und einem komplexen Modell,
+welches auf den Trainingsdaten besser funktioniert, aber eventuell mehr unter
+Overfitting leidet.
+
+\mparagraph{Abschätzen des realen Fehlers}
+Der reale Fehler kann durch den empirischen Fehler und die VC-Dimension wie
+folgt abgeschätzt werden:
+
+Mit Wahrscheinlichkeit $P(1-\eta)$ gilt:
+\begin{displaymath}
+        E(h_\alpha) \leq E_{emp}(h_\alpha) + \sqrt{\frac{VC(h_\alpha)}{N} \cdot (\log(2 N / VC(h_\alpha)) + 1) - \frac{\log(\eta  / 4)}{N}}
+\end{displaymath}
+
+
+wobei gilt:
+
+\begin{itemize}
+    \item $E(h_\alpha)$ ist der reale Fehler der mit der Hypothese $h_\alpha$
+        gemacht wird
+    \item $E_{emp}(h_\alpha)$ ist der empirische Fehler der mit der Hypothese $h_\alpha$
+        gemacht wird
+    \item $VC(h_\alpha)$ ist die VC-Dimension der Lernmaschine
+    \item N ist die Anzahl der Lernbeispiele
+    \item $0 \leq \eta \leq 1$
+\end{itemize}

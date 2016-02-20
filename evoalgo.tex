@@ -1,0 +1,116 @@
+\chapter{Evolutionäre Algorithmen}
+
+\mparagraph{Nomenklatur}
+\begin{itemize}
+    \item \textbf{Individuum}: eine mögliche Lösung, Hypothese
+    \item \textbf{Population und Generation}: Lösung bzw. Hypothesenmenge
+    \item \textbf{Erzeugen von Nachkommen}: Generierung neuer Hypothesen
+    Methoden z.B \begin{itemize}
+        \item Rekombination: Vermischen der Gene zweier Elternteile.
+        \begin{itemize}
+            \item diskret: ein Teil Gene von einem Elternteil
+            übernommen werden und andere vom anderen Elternteil.
+            \item intermediär: Nachkomme wird gemittelt $z_i = \frac{(x_i + y_i)}{2}$
+            \item Crossover: aus 2 Eltern werden 2 Nachkommen. singlepoint,
+            twopoint, uniform crossover.
+        \end{itemize}
+        \item Mutation: Veränderung einzelner Gene bei Abstammung von einem Elternteil.
+        z.B
+        \begin{itemize}
+            \item Bitinversion: Feste anzahl aber zufällige Gene
+            \item Translation: Verschieben einer Teilsequenz
+            \item Invertiertes Einfügen
+            \item spezielle Mutationsoperatoren sind andwendungsspezifisch.
+        \end{itemize}
+    \end{itemize}
+    \item \textbf{Veränderter Nachfolger, Kind, Nachkomme}: neue Hypothese
+    \item \textbf{Fitness Funktion}: Hypothesengüte, zu optimierendes Kriterium
+    \item \textbf{Selektion der Besten}: Auswahl der Hypothesen, welche die
+    beste Problemlösung erzeugen.
+\end{itemize}
+
+\mparagraph{Grundalgorithmus}
+Solange fitness nicht optimal mache:
+\begin{enumerate}
+    \item Selektion der Eltern
+    \item Generierung von Nachkommen
+    \item Fitness bewertung
+    \item Selektion der überlebenden Populationsmitglieder
+\end{enumerate}
+
+\mparagraph{Selektion}
+
+Zwei arten der Selektion:
+\begin{itemize}
+    \item die Eltern für jeweilige Erzeugung von Nachkommen (mating)
+    \item der Population für die nächste Iteration
+\end{itemize}
+
+Probleme:
+\begin{itemize}
+    \item \textbf{Genetische Drift}: Individuen vermehren sich zufällig mehr
+    als andere. Diese sind nicht unbedingt besser für das Problem geeignet.
+    \item \textbf{Crowding, Ausreißerproblem}: ''fitte'' Individuen und ähnliche
+    Nachkommen dominieren die Population. Problematisch wegen lokaler Maxima.
+\end{itemize}
+
+
+\mparagraph{Mating}
+Ist ein Populationsmodell
+\begin{itemize}
+    \item \textbf{Insellmodell}: lokal, die Evolution läuft weitgehend getrennt,
+    nur manchmal werden Individuen ausgetauscht.
+    \item \textbf{Nachbarschaftsmodell}: nahe Umgebung, Nachkommen dürfen nur von
+    Individuen gezeugt werden, die in ihrere Nachbarschaft die beste Fitness
+    besitzen.
+    \item \textbf{Eine einfache Menge}: global, die global Besten entwickeln
+    sich rasch weiter, andere Entwicklungslinien werden unterdrückt.
+\end{itemize}
+
+\mparagraph{Selektionsmethoden}
+
+\begin{itemize}
+    \item Fitness Based Selection \\
+    $P(x) \approx \frac{\lambda}{\mu}\frac{f(x)}{\sum_{x' \in \text{Pop}} f(x')}$
+
+    \begin{itemize}
+        \item $P(x)$: Wahrschl. der Auswahl von Individuum $x$
+        \item $\lambda$ Anzahl von Nachkommen
+        \item $\mu$ Populationsgröße
+        \item $f$ Fitness Funktion
+    \end{itemize}
+    \item Ranking Based Selection \\
+    $P(x) \approx \frac{g(r(x))}{\sum_{x' \in \text{Pop}} g(r(x'))}$
+
+    \begin{itemize}
+        \item $P(x)$: Wahrschl. der Auswahl von Individuum $x$
+        \item $r(x)$ ranking von x in der aktuellen Population gemäß Fitness
+        Funktion
+        \item $g$ Mit der Güte des Ranges monoton steigende Funktion
+    \end{itemize}
+    \item Tournament Selection
+\end{itemize}
+
+\mparagraph{Evolution}
+\begin{itemize}
+    \item \textbf{Lamarksche Evolution}: Individuen ändern sich (lernen) nach
+    der Erzeugung. Genotyp (alle Gene) wird verändert und anschließend vererbt.
+    \item \textbf{Baldwinsche Evolution}: Individuen ändern sich (lernen) nach
+    der Erzeugung. Genotyp bleibt unverändert
+    \item \textbf{Hybride Verfahren}: Es gibt veränderbare und fixe Phänotypen.
+\end{itemize}
+
+\mparagraph{Anwendungsbeispiele}
+\begin{itemize}
+    \item Travelling Salesman
+    \item Flugplanoptimierung
+    \item Mischung von Kaffeesorten
+    \item Cybermotte: Motte müssen optimales Muster finden, um sich vor einer
+    Fläche weißem Rauschen zu verbergen
+    \item Optimale Steuerung in der Robotik
+    \item Optimierung der Topologie Neuronaler Netze
+    \item Optimierung des Muskel-Skelett Systems hinsichtlich energieeffizienter
+Steuerung
+
+
+\end{itemize}

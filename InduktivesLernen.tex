@@ -1,0 +1,69 @@
+\chapter{Induktives Lernen}
+Eine große Menge an Beispielen wird gegeben. Der Lerner muss selbst das Konzept herausfinden.
+
+\paragraph{Version Space} \mbox{} \\
+Der Raum aller Hypothesen, welche mit den Trainigsbeispielen konsistent sind.
+
+\paragraph{Konzept} \mbox{} \\
+Ein Konzept beschreibt Untermenge von Objekten oder Ereignissen definiert auf
+einer größeren Menge
+
+\paragraph{Konsistenz} \mbox{} \\
+Keine negativen Beispiele werden positiv klassifiziert.
+
+\paragraph{Vollständigkeit} \mbox{} \\
+Alle positiven Beispiele werden als positiv klassifiziert.
+
+\paragraph{Lernen als Suche im Hyphotesenraum} \mbox{}
+\begin{itemize}
+    \item \textbf{Algorithmen}
+    \begin{itemize}
+        \item Suche vom Allgemeinen zum Speziellen: Negative Beispiele führen zur
+        Spezialisierung
+        \item Suche vom Speziellen zum Allgemeinen: Positive Beispiele führen zur
+        Verallgemeinerung
+        \item Version Space: Paralleles Verwenden der oben genannten Anwendungen.
+    \end{itemize}
+    \item \textbf{Präzedensgraph}
+    \begin{itemize}
+        \item In welcher Reihenfolge werden Aktionen ausgeführt?
+        \item Codierung der Hypothese mit Gerichtetem, azyklischem Graphen
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Version Space Algorithmus} \mbox{} \\
+Der Version Space Algorithmus ist ein binärer Klassifikator für diskrete
+Feature-Spaces.
+\begin{itemize}
+    \item Beginne mit generellster Hypothese $G=(?,...,?)$ und speziellester
+    Hypothese $S = (\#,...,\#)$
+    \item Ist Beispiel false
+    \begin{itemize}
+        \item Lösche aus S Hypothesen, die Beispiel abdecken
+        \item Spezialisiere Hypothesen in G soweit, dass sie das Beispiel nicht abdecken
+        und allgemeiner als eine Hypothese in S bleiben.
+        \item Lösche aus G alle Hypothesen, die spezifischer als eine andere
+        Hypothese in G sind
+        \item Kurz: spezialisiere generellste Hypothese
+    \end{itemize}
+    \item Ist Beispiel true
+    \begin{itemize}
+        \item Lösche aus G Hypothesen, die mit Beispiel inkonsistenten Hypothesen
+        \item Verallgemeinere die Hypothesen in S soweit, dass sie Beispiel abdecken
+        und dass sie spezifischer als eine Hypothese in G bleiben
+        \item Lösche aus S alle Hypothesen, die allgemeiner als eine andere
+        Hypothese aus S sind
+        \item Kurz: Passe speziellste Hypothese an und verallgemeinere
+    \end{itemize}
+    So kann man den Raum aller mit den Trainigsdaten konsistenten Hypothesen
+    finden.
+
+    \item Positive Aspekte
+    \begin{itemize}
+        \item feststellbar, welche Art von Beispiele noch nötig ist
+        \item feststellbar, wann das Lernen abgeschlossen ist
+    \end{itemize}
+\end{itemize}
+\paragraph{Induktiver Bias} \mbox{} \\
+Induktives Lernen erfordert Vorannahmen. Bias ist die Vorschrift, nach der Hypothesen
+gebildet werden.

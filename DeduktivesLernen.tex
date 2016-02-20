@@ -1,0 +1,95 @@
+\chapter{Deduktives Lernen}
+Fakten werden gegeben. Der lernende bekommt das allgemeine Konzept gesagt und
+ muss nur logische Schlussfolgerungen machen.
+
+\mparagraph{Erklärungsbasiertes Lernen, EBL Explanation Based Learning}
+The key insight behind explanation-based generalization
+is that it is possible to form a justified generalization of a
+single positive training example provided the learning
+system is endowed with some \textbf{explanatory capabilities}. In
+particular, the system must be able to explain to itself \textbf{why
+the training example is an example of the concept} under
+study. Thus, the generalizer is presumed to possess a
+definition of the concept under study as well as domain
+knowledge for constructing the required explanation.\\
+
+Gegeben:
+\begin{itemize}
+    \item Zielkonzept: Beschreibung des zu lernenden Konzepts
+    \item Trainigsbeispiel: Beispiel für das Zielkonzept
+    \item Bereichstheorie: Regeln und Fakten, die erklären warum Trainigsbeispiel
+    ein Beispiel für das Zielkonzept ist
+    \item Operationalitäts-(Anwendbarkeits) Kriterium: Ein Prädikat über
+    Konzeptbeschreibung, das die Form spezifiziert, in der erlernte Beschreibungen
+    vorliegen müssen.
+\end{itemize}
+
+Gesucht:
+\begin{itemize}
+    \item Eine Generalisierung des Trainigsbeispiels, die eine hinreichende
+    Definition des Zielkonzeptes darstellt und das Operationalitätskriterium erfüllt.
+
+\end{itemize}
+\mparagraph{Explanation Based Generalization, EBG}
+Prozess, der implizites Wissen in explizites Wissen umwandelt. \\
+EBG ist ein Zweischrittverfahren und geht wie folgt vor:
+\begin{itemize}
+    \item Explain: Finden einer Erklärung, die zeigt, warum das Trainigsbeispiel
+    die Definition des Zielkonzeptes erfüllt $\rightarrow$ Modus Ponens anwenden.
+    \item Generalize: Bestimme hinreichende Bedingungen, unter denen die oben
+gefundene Erklärungsstruktur gültig ist und formuliere diese
+Kriterien in Termen, die das Operationalitätskriterium erfüllen.
+\end{itemize}
+Bei EBG werden Makrooperatoren (Zusammengefasste Operatorsequenzen, welche die
+Kosten für das Finden von Problemlösungswissen reduzieren) erzeugt.
+STRIPS verwendet EGB.
+
+\mparagraph{Deduktives vs. Induktives lernen}
+
+\begin{table}[h!]
+\centering
+
+\begin{tabular}{|l|l|l|}
+\hline
+ & \textbf{Induktives Lernen} & \textbf{Deduktives Lernen} \\ \hline
+\textbf{Ziel} & Hypothese passt du den Daten & Hypothese passt zur Bereichstheorie \\ \hline
+\textbf{Vorteile} & wenig a-priori wissen & wenig Beispiele notwendig \\ \hline
+\textbf{Nachteile} & \begin{tabular}[c]{@{}l@{}}- schlecht bei geringen Datenmengen\\ - schlecht bei inkorrektem Bias\end{tabular} & schlecht, falls imperfekte Bereichstheorie \\ \hline
+\end{tabular}
+\end{table}
+
+\mparagraph{Lernproblem}
+Seien $D$ Trainigsbeispiele, möglicherweise mit Fehlern, $B$ die Bereichstheorie,
+möglicherweise Fehlerhaft und $H$ der Hypothesenraum. So lässt sich die
+beste Hypothese $h$, welche am besten zu Trainigsbesiepiel als auch Bereichstheorie
+passt mittels
+\begin{displaymath}
+    \argmin_{h \in H} k_D E_D(h) + k_bE_B(h)
+\end{displaymath}
+berechnen. Wobei
+\begin{itemize}
+    \item $E_D, E_B$: Fehlerrate bezüglich Trainigsdaten/Bereichstheorie
+    \item $k_D, k_B$: relatives Gewicht für Trainigsdaten/Bereichstheorie
+\end{itemize}
+
+\mparagraph{Knowledge Based Artificial Neurol Network, KBANN}
+KBANN ist ein hybrides Verfahren. Die Idee hierbei ist es mittels Bereichstheorie
+ein Neuronales Netz zu initialisieren, welches durch Backpropagation und
+Trainigsbeispiele verfeinert wird.
+
+\begin{enumerate}
+    \item Pro Instanzattribut wird ein Netz-Input verwendet. Für jede Klausel
+    wird ein Neuron hinzugefügt
+    \item Dieses ist mit dem Instanzattribut durch das Gewicht $w$ verbunden
+    wenn es nicht negiert ist. Ansonsten $-w$
+    \item Der Schwellwert wird auf $-(n-0.5)w$ gesetzt. $n$ ist die Anzahl der
+    nicht negierten Bedingungsteile
+    \item Verbinde die restlichen Neuronen von Schicht $i$ mit Schicht $i+1$ indem
+    zufällige kleine Gewichte gesetzt werden.
+\end{enumerate}
+
+Anwendung:
+\begin{itemize}
+    \item Lernen von physikalischen Objektenklassen
+    \item Erkennung biologischer Konzepte in DNS-Sequenzen
+\end{itemize}

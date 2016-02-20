@@ -1,0 +1,131 @@
+\chapter{Neuronale Netze}
+
+\mparagraph{Einsatzfelder}
+\begin{itemize}
+    \item Klassfikation und Mustererkennung (Sprach und Schrifterkennung)
+    \item Funktionsapproximation
+    \item Mustervervollständigung (Kodierung, Bilderkennung)
+\end{itemize}
+
+\mparagraph{Perzeptron nach Rosenblatt}
+\begin{itemize}
+    \item Auswertung: Input Vektor und Bias mit Gewichten multiplizieren,
+    addieren und Aktivierungsfunktion anwenden
+    \item Training: Zufällige Initialisierung des Gewichtsvektors, addieren
+    von fehlklassifizierten Vektoren auf Gewichtsvektor
+\end{itemize}
+
+\mparagraph{Delta Regel}
+Lernalgorithmus für Neuronale Netze mit einer Schicht. Ist ein Spezialfall
+des allgemeineren Backpropagation Algorithmus.
+\begin{equation}
+    \Delta w_{ij} \in \alpha(t_j - y_j) \phi'(h_j)x_i
+\end{equation}
+\begin{itemize}
+    \item $\Delta w_{ij} \in \mathbb{R}$ ist die Änderung des Gewichts von Input
+    $i$ zum Neuron $j$
+    \item $\alpha \in [0,1]$ ist die Lernrate (typischerweise $\alpha$ ca. 0.1)
+    \item $ t_j \in \mathbb{R}$ ist der Zielwert des Neurons $j$
+    \item $y_j \in \mathbb{R}$ ist die Tatsächliche ausgabe
+    \item $\phi'$ ist die ableitung der Aktivierungsfunktion des Neurons
+    \item $h_j \in \mathbb{R}$ ist die gewichtete Summe der Eingaben des Neurons
+    \item $x_i \in \mathbb{R}$ der $i$-te Input
+\end{itemize}
+\mparagraph{Gradientenabstieg}
+Optimierungsalgorithmus für Differenzierbare Funktionen. Starte an einer zufälligen
+Stelle $x_0$ und führe folgenden Schritt mehrfach durch
+\begin{equation}
+    x_0 \leftarrow x_0 - \alpha(\text{grad})f(x_0)
+\end{equation}
+\begin{itemize}
+    \item $\alpha \in (0,1]$ Lernrate
+    \item $f$ ist die zu optimierende Funktion
+\end{itemize}
+\mparagraph{Backpropagation}
+Auf Multilayer Perceptron angepasster Gradientenabstieg.
+
+Initialisiere Gewichte mit kleinen zufälligen Werten.\\
+
+Wiederhole:
+\begin{itemize}
+    \item Auswahl eines Beispielmusters $d$
+    \item Bestimmen der Netzausgabe
+    \item Bestimmen des Ausgabefehler (bzgl. Sollausgabe)
+    \item Sukzessives Rückpropagieren des Fehlers auf die einzelnen Neuronen
+    \item Anpassung der Gewichtsbelegung nach Delta Regel bis Abbruchkriterium
+    erfüllt ist.
+\end{itemize}
+
+\mparagraph{Radiale Basisfunktion (Radial Basic Function, RBF)}
+Eine radiale Basisfunktion ist eine Funktion $f: D \rightarrow \mathbb{R}$,
+für die $f(x) = f(\|x\|)$ gilt bzw. allgemeiner, für die ein $c \in D$
+existiert, sodass $f(x, c) = f(\|x - c\|)$ gilt.
+
+Der Wert der Funktion hängt also nur von der Distanz zum Ursprung bzw.
+allgemeiner zu einem Punkt $c \in D$ ab.
+
+Ein typisches Beispiel sind gaußsche RBFs:
+$f(x) = e^{-(a (x - c)^2)}$, wobei $a, c$ Konstanten sind.
+
+Radial Basis Funktion Netz besteht typischerweise aus einem vorwärtsgerichtetem Netz
+mit 3 Schichten (1 Hidden Layer). Die Aktivierungsfunktion ist eine RBF. Jedes Neuron
+besitzt zwei Parameter. Radius und Zentrum.
+
+\mparagraph{Resiliant Propagation, RPROP}
+RPROP ist ein iteratives Verfahren zur Bestimmung des Minimums der
+Fehlerfunktion in einem neuronalen Netz bzw. eine Gewichtsupdate-Regel
+für neuronale Netze. Sie betrachtet nur das Vorzeichen des Gradienten,
+jedoch nicht den Betrag. Jedes Gewicht wird unabhängig von den anderen behandelt.\\
+
+Fehlerfunktion
+\begin{displaymath}
+    E = \frac{1}{2} \sum_{i in \text{outputs}}(t_i -o_i)^2
+\Delta w_{ij}(t)= \begin{cases}
+-\Delta_{ij}(t), \text{ wenn } \frac{\partial E}{\partial w_{ij}}(t) > 0 \\
++\Delta_{ij}(t), \text{ wenn }\frac{\partial E}{\partial w_{ij}}(t) < 0 \\
+0, \text{ sonst}
+\end{cases}
+\end{displaymath}
+
+
+Der Algorithmus hat Konstanten $\eta^- \in \mathbb{R}_{\le 1}$ sowie
+$\eta^+ \in \mathbb{R}_{\ge 1}$. Für jedes Gewicht ist außerdem
+$\eta=1$ zu Beginn. Bei jedem Gewichtsupdate wird überprüft, ob sich das Vorzeichen des
+Gradienten für dieses Gewicht geändert hat. Falls ja, wird das Gewicht
+um $\eta \cdot \eta^+$ bzw $\eta \cdot \eta^-$ geändert. Außerdem
+kann eine minimale bzw. eine Maximale Änderung gesetzt werden.
+
+
+\mparagraph{Cascade Correlation}
+Konstruktiver Lernalgorithmus für MLNN.
+
+\begin{enumerate}
+    \item Initialisierung: 2-schichtiges Netz, Abruchkriterien: Fehlerschranke,
+    Anzahl Neuronen, etc.
+    \item Trainieren - Anpassen aller Gewichte
+    \item Solange es zu keiner Besserung kommt:
+    \begin{itemize}
+        \item Füge neues Neuron (Kandidat Neuron) in neue Hiddenschicht und verbinde
+        es mit allen Input und output Neuronen.
+        \item Trainiere neues Neuron einmalig
+        \item Trainiere Netz
+    \end{itemize}
+\end{enumerate}
+
+\begin{itemize}
+    \item zu jedem Zeitpunkt nur eine Ebene von Verbindungen trainiert
+    \item lernt sehr schnell
+    \item inkrementelles Training
+    \item Iterative anpassung der Kapazität des Netzes.
+\end{itemize}
+\mparagraph{Dynamic Decay Adjustment ,DDA}
+Konstruktiver Lernalgorithmus zum Ausbilden einer RBF-Topologie für Klassifikation.
+Alle Parameter werden überwacht gefunden und jedes Neuron ist einer Klasse zugeordnet.
+
+Lernen erfolgt über das einfügen von Neuronen. Dieses wird über zwei Schwellwerte
+$\Theta_{pos}$ und $\Theta_{neg}$. Der Schwellwert $\Theta_{pos}$ muss beim Training
+eines Beispiels der Klasse $y_1$ auch von einem Neuron der selben Klasse überschritten
+werden. Sonst wird ein neues Neuron hinzugefügt.
+Der Schwellwert $\Theta_{neg}$ ist eine obere Grenze für die Aktivierung von Neuronen,
+die zu anderen Klassen gehören. Ist eine Aktivierung höher, wird der Radius des
+zugehörigen Neurons verringert.

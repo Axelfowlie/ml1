@@ -1,0 +1,28 @@
+\chapter{Einordnungskriterien}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[h!]
+\centering
+\advance\leftskip-1.0cm
+\scalebox{0.8}{
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{2}{|c|}{\multirow{2}{*}{\textbf{Algorithmus}}} & \multicolumn{2}{c|}{\textbf{Inferenztyp}} & \multicolumn{2}{c|}{\textbf{Lernebene}} & \multicolumn{2}{c|}{\textbf{Lernvorgang}} & \multicolumn{2}{c|}{\textbf{Beispielumgebung}} & \multicolumn{2}{c|}{\textbf{Beispielumfang}} & \multicolumn{2}{c|}{\textbf{Hintergrundwissen}} \\
+\multicolumn{2}{|c|}{} & ind. & ded. & symb. & subsymb. & überwacht & unüb. & inkr. & nicht inkr. & umfangreich & gering & emp. & axiom. \\ \hline
+\multicolumn{2}{|l|}{Version space} & x &  & x &  & x &  & x &  & x &  & x &  \\ \hline
+\multirow{2}{*}{NN} & klassisch & x &  &  & x & x &  & x &  & x &  & x &  \\ \cline{2-14}
+ & \begin{tabular}[c]{@{}c@{}}auto-\\ encoder\end{tabular} & x &  &  & x &  & x &  & x & x &  & x &  \\ \hline
+\multicolumn{2}{|l|}{Support Vector Machine} & x &  &  & x & x &  &  & x & x &  & x &  \\ \hline
+\multicolumn{2}{|l|}{k-means clustering} & x &  &  & x &  & x &  & x & x &  & x &  \\ \hline
+\multicolumn{2}{|l|}{AHC} & x &  &  & x &  & x &  & x & x &  & x &  \\ \hline
+\multicolumn{2}{|l|}{COBWEB} & x &  & x &  &  & x & x &  &  & x & x &  \\ \hline
+\multicolumn{2}{|l|}{Bayessche Netze} & x &  &  & x & x &  &  & x & x &  & x &  \\ \hline
+\multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Decision\\ Tree\end{tabular}} & \begin{tabular}[c]{@{}c@{}}ID3/C4.5\\ Random Forest\end{tabular} & x &  & x &  & x &  &  & x & x &  & x &  \\ \cline{2-14}
+ & ID5R & x &  & x &  & x &  & x &  & x &  & x &  \\ \hline
+\multicolumn{2}{|l|}{Hidden Markov Machine} & x &  &  & x & x &  &  & x & x &  & x &  \\ \hline
+\multicolumn{2}{|l|}{k-Nearest Neighbour} & x &  &  & x & x &  &  & x & x &  & x &  \\ \hline
+\multicolumn{2}{|l|}{Case Base Reasoning} & x &  & x &  & x &  & x &  &  & x & x &  \\ \hline
+\multicolumn{2}{|l|}{EBL} &  & x & x &  & x &  & x &  &  & x &  & x \\ \hline
+\end{tabular}}
+\end{table}

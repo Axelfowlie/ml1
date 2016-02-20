@@ -1,0 +1,84 @@
+\chapter{Support Vector Machines}
+
+Laut Vapnik sind SVM Lernmaschinen mit der kleinsten VC-Dimension, falls
+die Klassen linear separierbar sind.
+\mparagraph{Linearer Klassifikator}
+SVM ist ein binärer Klassifikator, welcher durch das Aufspannen einer
+Hyperebene im Raum $K$ die Daten in zwei Klassen trennt. Hierbei wird darauf geachtet,
+dass der Margin zu den nächsten Datenpunkten maximiert wird. \\
+Die Ebene ist durch einen Normalenvektor $w \in K$ und einem Bias $b \in \mathbb{R}$
+gegeben und werden in der Entscheidungsfunktion genutzt.
+\begin{equation}
+    f(x) := y = \text{sgn}(\langle w,x\rangle+b)
+\end{equation}
+Je nach Lage x bez. der Hyperebene erhält $y$ einen positiven oder negativen
+Wert $\Rightarrow$ Klassenzugehörigkeit von $x$\\
+
+Finde Trennebene maximaler Margin $\Leftrightarrow$ Finde Trennebene mit minimaler
+quadratischer Norm
+    \begin{displaymath}
+            \min_{w,b} \frac{1}{2}||w||^2
+    \end{displaymath}
+
+    \begin{displaymath}
+            \text{s.t } \forall i \in \{1,\dots,n\}: y_i(\langle w,x_i\rangle + b) \geq 1
+    \end{displaymath}
+
+\mparagraph{Schlupfvariablen}
+Aufgrund von Fehlern und Überlappung kann man in der Regel nicht linear trennen.
+Das Einführen von sog. Schlupfvariablen (Slack Variable) $\xi_i$ erlaubt Verletzungen
+der Nebenbedingungen und ermöglicht so lineare separierbarkeit. Um den Fehler
+gering zu halten wird die Summe der Schlupfvariablen minimiert. Der Einfluss wird
+über den Parameter $C \in \mathbb{R}$ geregelt.
+\begin{itemize}
+    \item C groß $\rightarrow$ wenige
+    Missklassifikationen.
+    \item C klein $\rightarrow$ maximale Margins
+\end{itemize}
+\begin{displaymath}
+    %\begin{split}
+            \min_{w} \frac{1}{2}||w||^2 + C \sum_{i=1}^m \xi_i \\
+        \end{displaymath}
+        \begin{displaymath}
+            \text{s.t } \forall i \in \{1,\dots,n\}: y_i(\langle w,x_i\rangle + b)
+            \geq 1-\xi_i
+    \end{displaymath}
+%\end{equation}
+\begin{itemize}
+    \item $0 \leq \xi_i \leq 1$ : Daten sind innerhalb der Margin
+    \item $\xi_i \geq 1$: Missklassifizierung
+    \item $C>0$: Soft-margin SVM
+\end{itemize}
+
+\mparagraph{Duales Problem}
+Das Hauptproblem besteht darin $b$ und $w$ zu finden. Das Duale Problem drückt
+$w$ als eine Linearkombination der Trainigsdaten $x_i$ aus:
+\begin{displaymath}
+    w = \sum_{i=1}^m \alpha_i y_i x_i
+\end{displaymath}
+\begin{itemize}
+    \item $y_i \in \{-1,1\}$: Klasse der Trainingsbeispiele
+    \item $\alpha_i$: Lagrange Multiplier
+\end{itemize}
+
+Für $\alpha = \{\alpha_1,\dots,\alpha_n\}$ lautet die duale Formulierung
+\begin{displaymath}
+    \max_w \sum_{i=1}^m \alpha_i - \frac{1}{2} \sum_{i=1}^m \sum_{j=1}^m \alpha_i
+    \alpha_j y_i y_j \langle \mathbf{x}_i, \mathbf{x}_j \rangle
+\end{displaymath}
+\begin{displaymath}
+    \text{s.t. } \forall i \in \{1,\dots,n\}: 0 \leq \alpha_i \leq C\
+\end{displaymath}
+\begin{displaymath}
+    \text{s.t. } \sum_{i=1}^m \alpha_i y_i = 0
+\end{displaymath}
+
+\mparagraph{Kernel Trick}
+Da meist die Daten nicht linear separierbar sind, werden die Feature Vektoren
+$x_i$ mit einer nicht-linearen Abbildung $\Phi$ in eine höhere Dimension transformiert.
+Da in der dualen Formulieren gehen die Datenpunkte $x_i$ nur als Skalarprodukt
+$\langle x_i,x_j \rangle$ ein. Das kann durch ein Skalarprodukt einer höheren
+Dimension ersetzt werden $\langle \Phi(x_i),\Phi(x_j) \rangle$ daher reicht die Berechnung mit einer Kernelfunktion
+\begin{displaymath}
+    K(x_i,x_j) = \langle \Phi(x_i),\Phi(x_j) \rangle
+\end{displaymath}

@@ -1,0 +1,77 @@
+\chapter{Entscheidungsbäume}
+Ein Entscheidungsbaum ist ein Klassifikator in Baumstruktur. Jeder Knoten
+repräsentiert einen Attributtest. Jeder Zwei entspricht einem bestimmten
+Attributwert und jedes Blatt entspricht einer Klasse
+\mparagraph{Information Gain}
+Die Entropie beschreibt die (Un)Reinheit einer Menge von Beispielen.
+Gegeben $S$ mit positiven und negativen Beispielen. Die Entropie von S lautet
+dann: \\
+\begin{displaymath}
+    \text{Entropy}(S) = -p_{+} \log_2 p_{+} - p_{-} \log_2 p_{-}
+\end{displaymath}
+Mit der Entropie lässt sich nun der Information Gain bestimmen. Dieser ist
+ ein Maß zur Bestimmung der Effektivität eines Attributs zur klassifizierung von
+ Trainingsdaten.
+\begin{displaymath}
+    \text{Gain}(S,A) = \text{Entropy}(S) - \sum_{v \in \text{Values}(A)}
+    \frac{|S_v|}{|S|} \text{Entropy}(S_v)
+\end{displaymath}
+\begin{itemize}
+    \item $\text{Values}(A)$ Set aller möglichen Werte für das Attribut A
+    \item $S_v$ Subset von $S$ bei denen Attribut $A$ den Wert $v$ hat
+\end{itemize}
+\mparagraph{ID3}
+Ist ein Top-Down Verfahren zum Aufbau eines Entscheidungsbaumes.
+\begin{enumerate}
+    \item A $\leftarrow$ Beste (höchster Information Gain) Entscheidungsattribut
+     für den nächsten Knoten
+    \item Weise A als Entscheidungsattribut für den nächsten Knoten zu.
+    \item Füge für jeden möglichen Wert von A einen Nachfolgeknoten ein
+    \item Verteile die Trainingsdaten gemäß ihrer Attributwerte auf die
+    Nachfolgeknoten
+    \item Terminiere wenn die Trainigsdaten perfekt abgebildet (Klassifiziert)
+    sind, sonst iteriere über die Nachfolgeknoten.
+\end{enumerate}
+
+Overfitting kann durch frühzeitiges Stoppen des Baumwachstums oder durch
+nachträgliches Prunen des Baumes vermieden werden.
+
+\mparagraph{Reduced Error Pruning}
+\begin{enumerate}
+    \item Teile Daten in Trainigs und Testdaten auf
+    \item Solange sich das Pruning nicht negativ auswirkt, verfahre wir folgt:
+    \begin{enumerate}
+        \item Evaluiere die Auswierkung des Entfernens jedes Knotens (und seiner
+        Nachfolgeknoten) auf die Klassifikationsgüte bzgl. der Testdaten.
+        \item Entferne den Knoten dessen Entfernen die Klassifikationsrate bzgl.
+        der Testdaten am meisten erhöht.
+    \end{enumerate}
+\end{enumerate}
+$\rightarrow$ liefert die kleinste Variante des akkuratesten Unterbaums.
+
+\mparagraph{C4.5}
+C4.5 ist ein Top-Down Verfahren zum Aufbau eines Entscheidungsbaums. Er basiert
+auf ID3 und verwendet \textbf{Rule Post Pruning}
+
+\begin{enumerate}
+    \item Erstelle Baum wie gewohnt aus den Trainigsdaten (Overfitting erlaubt)
+    \item Konvertieren den Baum in äquivalente Menge von IF-THEN Regeln. IF-Teil
+    erhält alle Attributtests eines Pfads, THEN die Ausgabe/Klasse
+    \item Prune (Generalisiere) die Regeln so lange sich ihre Vorhersagegenauigkeit
+    nicht verschlechtert (durch Entfernen von Vorbedinungen)
+    \item Sortiere alle Regel nach ihrer Klassifikationsgüte und verwende
+    sie in dieser Reihenfolge.
+\end{enumerate}
+\mparagraph{ID5R}
+Inkrementelles Verfahren d.h sukzessives einbringen von Beispielen
+in den Aufbau des Entscheidungsbaumes. \\
+Das Ergebnis ist äquivalent zu einem von ID3 erzeugten Baum, doch muss bei neuen
+Trainingsdaten nicht neu trainiert werden.
+
+\mparagraph{Random Forest}
+Ein Random Forest ist ein Klassifikationsverfahren, welches aus mehreren
+  verschiedenen, unkorrelierten Entscheidungsbäumen besteht. Alle
+  Entscheidungsbäume sind unter einer bestimmten Art von Randomisierung während
+  des Lernprozesses gewachsen. Für eine Klassifikation darf jeder Baum in
+  diesem Wald eine Entscheidung treffen und die Klasse mit den meisten Stimmen
+  entscheidet die endgültige Klassifikation.

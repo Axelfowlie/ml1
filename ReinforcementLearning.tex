@@ -1,0 +1,128 @@
+\chapter{Reinforcement Learning}
+Lernen durch Belohnung \\
+\textbf{Lernziel:} Finde Aktionssequenz $a_1, a_2, ...,a_n$, sodass dadurch die
+maximale Bewertung aufgesammelt wird
+
+\paragraph{Markrow-Entscheidungsproblem (Markrov Decision Process, MDP)} \mbox{}\\
+
+Ein MDP ist ein 5-Tupel $(S, A, P, R, \gamma)$ wobei
+\begin{itemize}
+    \item $S$: Endliche Zustandsmenge (States), ''Sensorik''
+    \item $A(s)$: Menge möglicher Aktionen im Zustand $s$, ''Aktorik''
+    \item Zustandsänderung (meist bekannt oder beobachtbar )\\
+    $\delta: (S \times A) \rightarrow S$\\ $\delta(s_t,a_t) = s_{t+1}$\\
+    Markov Bedingung: keine Abhängigkeit von der Vergangenheit
+    \item Bewertung von Aktionen (direkt oder indirekt messbar/bekannt)\\
+    $r:(S \times A) \rightarrow R \\ r(s_t,a_t) = r_t \\$
+    Die direkte Belohnung wenn durch Aktion a im Zustand s ausgeführt wurde
+    \item $\gamma \in [0,1]$ Diskontierungsfaktor, zeigt Bedeutung von direkter
+    Belohnung im Vergleich zu zukünfitger Belohnung an.
+    \begin{itemize}
+        \item $\gamma = 0$: aktuelle Aktionsbewertung ist wichtig (1-Step)
+        \item $\gamma > 0$: zukünftige (letzte) Bewertungen werden berücksichtigt. (n-step)
+        \item $\gamma < 1$: Notwendig um konvergente V-Funktionen (Value function) zu erhalten.
+    \end{itemize}
+\end{itemize}
+
+\section{Reinforcement Learning}
+Beim RL liegt ein MDP vor. Es gibt also einen Agenten, der Aktionen ausführen kann.
+Diese können (nicht notwendigerweise) sofort bewerten werden.
+
+\paragraph{Policy} \mbox{} \\
+Policy ist eine Vorschrift $\pi: S \rightarrow A$, in welchem Zustand welche Aktion
+ausgeführt werden soll.
+\paragraph{Policy Learning} \mbox{} \\
+Gesucht $S_{1} \xrightarrow[a_1]{r_1}S_{2}\xrightarrow[a_2]{r_2}\dots \xrightarrow[a_{n-1}]{r_{n-1}}S_n$
+Finde optimale Policy $\pi^{*}$
+\paragraph{Value Function} \mbox{} \\
+Die Funktion $V^{\pi}:S\rightarrow \mathbb{R}$ gibt den erwarteten Wert (nicht Belohnung, da $\gamma$ eingeht)
+eines Zustand $s$ unter der policy $\pi$ an. Mit $V^{*}$ wird der Wert unter der
+optimalen policy bezeichnet. \\
+$V^{\pi}(s_t) = r_t + {\gamma} r_{t+1} + {\gamma}^2 r_{t_2} + \dots = \sum\limits_{i=0}^{\infty} \gamma^i r_{t+1}$
+\begin{itemize}
+    \item optimale Zielfunktion: $\pi^{*}(s) = \underset{\pi}{\mathrm{argmax}} V^{\pi}, \forall s$
+    \item max. akkumulierte Bewertung: $V^{*} = V^{\pi^{*}}(s)$
+    \item rekursive Definition (Bellman Gl.): $V^{*}(s_t) = r_t + \gamma V^{*}(s_{t+1})$
+\end{itemize}
+
+\paragraph{Simple Value Iteration} \mbox{} \\
+\begin{algorithm}[H]
+    \begin{algorithmic}
+        \State Initialisiere $\hat{V^{*}}(s)$ zufällig
+        \While{} forever
+            \State wähle einen Zustand $S_t$
+            \State ermittle beste Aktion und den Folgezustand
+            \State $s_t = \delta(s_t,\pi^{*}(s_t)))$
+            \State ersetzte
+            \State $V^{*}(s_t) = r_t + \gamma V^{*}(s_{t+1})$
+            \EndWhile
+    \caption{Value Iteration}
+    \end{algorithmic}
+\end{algorithm}
+
+Simple Value Iteration schätzt die Value Function ab, indem sie solange wie nötig
+aktualisiert wird bis sie konvergiert.
+
+\paragraph{Simple Temporal Difference Learning} \mbox{} \\
+Funktioniert genau wie Simple Value Iteration, nur dass die
+Value Function mit einer learning rate $\alpha$ aktualisiert wird:\\
+\begin{itemize}
+    \item $\hat{V}^{*}(s_t) = (1-\alpha) * \hat{V}^{*}(s_t)+\alpha(r_t + \gamma \hat{V}^{*}(s_{t+1}))$
+\end{itemize}
+\paragraph{Q-Funktion} \mbox{} \\
+Die Funktion $Q : S \times A \rightarrow \mathbb{R}$, $Q(s,a)$ gibt die maximale
+Bewertung, die erreicht werden kann im Zustand $s$ durch die Aktion $a$.
+\paragraph{Q-Learning} \mbox{} \\
+\begin{algorithm}
+\begin{algorithmic}
+    \State Ziel: Finde Schätzung $\hat{Q}(s,a)$ der absoluten Funktion $Q(s,a)$
+    \State Lernen
+    \State Initialisiere $\forall s,a$ $\hat{Q}(s,a) = 0$
+    \State Wähle Zustand
+    \While{} Forever:
+        \State wähle Aktion $a$ und führe aus
+        \State $r \leftarrow$ direkte Bewertung (reward)
+        \State neuer Zustand $s'$
+        \State update
+        \IndState $\hat{Q}(s,a) \leftarrow r + \gamma \max_{a'} \hat{Q}(s',a')$
+        \State $s\leftarrow s'$
+        \EndWhile
+    \caption{Q-Learning}
+\end{algorithmic}
+
+\end{algorithm}
+
+\paragraph{Temporal Difference Learning}\mbox {} \\
+Die Differenz folgender Schätzungen als Lernsignal für $\hat{Q}(s,a), \hat{V}^{*}(S)$
+
+Zum predicten nutzt TD die Annahme, dass aufeinander folgende Vorhersagen
+oftmals in gewissen Maßen zusammenhängen. Schätzungen werden anhand anderer
+gerlernter Schätzungen angepasst ohne auf das Endgültige Ergebniss zu warten.
+
+\mparagraph{Vorwärtssicht (theoretisch)}
+\begin{itemize}
+    \item Gewichtete Anpassung an direkt nachfolgender Schätzung (1-Step) oder
+    \item Gewichtete Anpassung an n Schritte nachfolgender Schätzung (n-step)
+\end{itemize}
+
+\mparagraph{Rückwärtssicht}
+Fehlersignale (temporal differences) in den Schätzungen werden nach hinten
+weitergegeben.
+
+\paragraph{Eligibility Traces, Verantwortlichkeitsspuren} \mbox{} \\
+Eligibility Traces sind ein Grundmechanismus des Reinforcment Learning. \\
+Es gibt 2 Arten diese zu betrachten:
+\begin{itemize}
+    \item Die theoretische Weise, dass sie die Brücke von Temporal Difference
+    zur Monte Carlo Methode sind (Vorwärtssicht)
+    \item Oder, dass eligiblity traces eine Art temporäre Aufnahme eines
+    Geschehens in einem Event sind (z.B das Erreichen eines Zustandes oder das
+    Ausführen einer Aktion (Rückwärtssicht). Eligibility Traces bietet also ein
+    Kurzzeitgedächnis von vielen vorheriger Inputs so dass neue Beobachtungen
+    in Bezug auf diese Signale aktualisiert werde können.
+\end{itemize}
+Die Verwendung von Eligibility Traces wird durch $(\lambda)$ gekennzeichnet (z.B
+$TD(\lambda)$)
+\paragraph{SARSA} \mbox{} \\
+Ist ein Lernalgorithmus, der die Q-Funktion updated:
+$Q(s_t,a_t) \leftarrow (1-\alpha) \cdot Q(s_t,a_t) + \alpha [r_{t+1} + \gamma Q(s_{t+1}, a_{t+1})]$

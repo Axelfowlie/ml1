@@ -1,0 +1,151 @@
+\chapter{Bayes Lernen}
+Statistisches Lernverfahren
+\begin{itemize}
+    \item Kombiniere vorhandenes Wissen (a priori Wahrsch.) mit beobachteten
+    Daten.
+    \item Hypothesen können mit Wahrscheinlichkeiten angegeben werden.
+    \item Jedes Beispiel kann die Glaubwürdigkeit einer bestehendes Hypothese
+    erhöhen oder verringern.
+    \item  Mehrere mögliche Hypothesen können gemeinsam ausgewertet werden, um
+    genauere Ergebnisse zu erzielen.
+\end{itemize}
+
+\mparagraph{Produktregel}
+\begin{displaymath}
+    P(A \land B) = P(A|B) \cdot P(B) = P(B|A) \cdot P(A)
+\end{displaymath}
+
+\mparagraph{Summenregel}
+\begin{displaymath}
+    P(A \lor B) = P(A) + P(B) - P(A \land P)
+\end{displaymath}
+
+\mparagraph{Theorem der totalen Wahrscheinlichkeit}
+Für sich gegenseitig ausschließende Ergebnisse $A_1,\dots,A_n$ mit
+$\sum_{i=1}^n P(A_i) = 1$ gilt
+\begin{displaymath}
+    P(B) = \sum_{i=1}^n P(B|A_i) P(A_i)
+\end{displaymath}
+
+\mparagraph{Satz von Bayes}
+    Seien $A, B$ Ereignisse, $P(B) > 0$. Dann gilt:
+\begin{displaymath}
+P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}
+\end{displaymath}
+\begin{itemize}
+    \item $P(A)$ a priori Wahrscheinlichkeit
+    \item $P(B|A)$ likelihood Wahrscheinlichkeit
+    \item $P(A|B)$ a posteriori Wahrscheinlichkeit
+\end{itemize}
+
+\mparagraph{Maximum A Posteriori Hypothese, MAP}
+Sei $H$ der Raum aller Hypothesen und $D$ die Menge der beobachteten Daten. Dann
+ist
+\begin{displaymath}
+    h_{MAP} = \argmax_{h \in H} P(D|h)P(h)
+\end{displaymath}
+die Hypothese mit der größten a posteriori Wahrscheinlichkeit.\\
+
+\textbf{Konzeptlernen}
+Definition: Ein Lernverfahren ist ein konsistenter Lerner, wenn es eine Hypothese
+liefert, die keine Fehler auf den Trainingsdaten macht. \\
+Unter obigen Voraussetzungen gibt jeder konsistente Lerner eine MAP-Hypothese aus
+
+\mparagraph{Maximum Likelihood Hypothese, ML}
+Sei $H$ der Raum aller Hypothesen und $D$ die Menge der beobachteten Daten.
+Dann heißt:
+\begin{displaymath}
+    h_{ML} = \text{arg max}_{h \in H} P(h|D)
+\end{displaymath}
+die Menge der Maximum Likelihood Hypothesen.\\
+(Vorlesung Anwendung: Lernen einer reell-wertigen Funktion)
+
+\mparagraph{Optimaler Bayesklassifikator}
+Bei der Klassifikation $v_j$ einer neuen Instanz $x$ ist $h_{MAP}(x)$ \textbf{nicht}
+die wahrscheinlichste Klassifikation!
+Die Optimale Klassifikation nach Bayes lautet:
+\begin{displaymath}
+v_{OB} = \argmax_{v_j \in V} \sum_{h_i \in H} P(v_j|h_i)P(h_i|D)
+\end{displaymath}
+
+\begin{itemize}
+    \item \textbf{Vorteil}: Kein anderes Klassifikationsverfahren (bei gleichem
+    Hypothesenraum und Vorwissen) schneidet im Durchschnitt besser ab!
+    \item \textbf{Nachteil} : Sehr kostenintensiv bei großer Hypothesenanzahl!
+\end{itemize}
+
+
+\mparagraph{Gibbs Algorithmus}
+Der Algorithmus von Gibbs ist eine Methode um Stichproben von bedingten
+ Verteilungen zu erzeugen.
+
+\begin{enumerate}
+    \item Wähle h aus H zufällig gemäß $P(h|D)$
+    \item Nutze $h(x)$ als Klassifikation von x.
+    \item Besitmmte Erwartungswert
+\end{enumerate}
+Eigenschaft: Unter bestimmten Annahmen gilt
+\begin{displaymath}
+    E[\text{error}_{\text{Gibbs}}] \leq 2E[\text{error}_{\text{BayesOptimal}}]
+\end{displaymath}
+
+\mparagraph{Bedinge Unabhängigkeit}
+Seien $X, Y, Z$ Zufallsvariablen. Dann heißt $X$ bedingt unabhängig
+ von $Y$ gegeben $Z$, wenn $P(X|Y,Z) = P(X|Z)$ gilt.
+
+\mparagraph{Naive Bayes Klassifikator}
+Ein Klassifikator heißt naiver Bayes-Klassifikator, wenn er den Satz von Bayes
+unter der naiven Annahme der Unabhängigkeit der Features benutzt.\\
+\begin{displaymath}
+        v_{NB} = \argmax_{v_j \in V} P(v_j) \prod_{i} P(a_i|v_j)
+\end{displaymath}
+
+\begin{itemize}
+    \item $P(v_j)$ und $P(a_i|v_j)$ werden basierend auf den Häufigkeiten in den
+    Trainingsdaten geschätzt.
+    \item Wahrscheinlichkeiten für Klassifikation entspricht
+    gelernter Hypothese.
+    \item Neue Instanzen werden klassifiziert unter Anwendung obiger MAP Regel.
+    \item Wenn Annahme (bedingte Unabhängigkeit der Attribute) erfüllt ist, ist
+     $v_{NB}$ äquivalent zu einer MAP-Klassifikation.
+\end{itemize}
+$\rightarrow$ Keine explizite Suche im Hypothesenraum!
+
+\mparagraph{Schätzen von Wahrscheinlichkeiten}
+Was ist wenn für eine Klasse $v_j$ ein Attribut $a_i$ einen bestimmten Wert
+in den Daten gar nicht annimmt?
+\begin{displaymath}
+    \hat{P}(a_i|v_j) = 0 \rightarrow \hat{P}(v_j) \prod_{i} \hat{P}(a_i|v_j) = 0
+\end{displaymath}
+Lösung dafür ist der m-Laplace Schätzer
+\begin{displaymath}
+    \hat{P}(a_i|v_j) \leftarrow \frac{n_c + mp}{n+m}
+\end{displaymath}
+\begin{itemize}
+    \item $n$ Anzahl der Beispiele mit $v = v_j$
+    \item $n_c$ Anzahl der Beispiele mit $v = v_j$ und $a = a_j$
+    \item $p$ A priori Wahrscheinlichkeit für $\hat{P}(a_i|v_j)$ z.B $p =
+    \frac{1}{|\text{Werte}(a_i)|}$
+    \item $m$ Anzahl der virtuellen Beispiele gewichtet mit apriori
+    Wahrscheinlichkeit $p$
+\end{itemize}
+
+
+\mparagraph{Bayes Netze}
+Beschreiben bedingte Abhängigkeiten/Unabhängigkeiten bzgl. Untermengen von
+Variablen.\\
+$\rightarrow$ Erlauben somit die Kombination von a priori wissen über bedingte
+(Un-)Abhängigkeiten von Variablen mit den beobachteten Trainigsdaten. \\
+Ein Bayesches Netz ist ein gerichteter, azyklischer Graph. $Y = \{Y_1,\dots,Y_n\}$
+ist die Menge der Knoten wobei jeder einer Zufallsvariable im Graph repräsentiert.
+Existiert eine gerichtete Kante $(Y_i,Y_j)$ so existiert eine direkte Abhängigkeit
+zwischen $Y_i$ und $Y_j$. \\
+Weiterhin gibt es eine lokale Tabelle mit bedingen Wahrscheinlichkeiten für jede
+Variable gegeben ihre direkten Vorgänger.\\
+Es gilt:
+\begin{displaymath}
+    P(y_1,\dots,y_n) = \prod_{i=1}^n P(y_i | \text{Vorgänger}(Y_i))
+\end{displaymath}
+wobei $\text{Vorgänger}(Y_i)$ die Menge der direkten Vorgänger von $Y_i$ ist. \\
+Training erfolgt via EM Algorithmus falls Struktur bekannt, aber nur einige
+Variablen beobachtbar.

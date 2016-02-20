@@ -1,0 +1,99 @@
+\chapter{Unüberwachtes Lernen}
+Sammeln und Klassifizieren von Trainigsdaten kann sehr aufwendig sein.
+Nutze Ähnlichkeit in Traingsdaten um Klassen/ballungen zu erschließen oder
+um wesentliche Charakteristika/Merkmale aus den Daten zu verwenden.
+
+\mparagraph{k-means Clustering}
+\begin{enumerate}
+    \item Set an Datenpunkten $x_1,\dots,x_n$
+    \item Plaziere k Zentren $z_1,\dots,z_k$ zufällig
+    \item Wiederhole bis keine Veränderung mehr eintritt
+    \begin{itemize}
+        \item Finde für jeden Punkt $x_i$ das nächste Zentrum $z_j$ (eukl. Dist)
+        und weise $x_i$ dem Cluster $c_j$ zu
+        \item Berechne für jeden Cluster das neue Zentrum (Mittelwert aller
+        dem Cluster $c_j$ zugewiesenen Punkte)
+    \end{itemize}
+\end{enumerate}
+
+\mparagraph{fuzzy k-means}
+Jeder Datenpunkt wird eine Zugehörigkeitswahrscheinlichkeit zugewiesen.
+Je weiter ein Datenpunkt von einem Zentrum entfernt ist, desto unwahrscheinlicher
+wird die Zugehörigkeit. \\Die Cluster Zugehörigkeit des Datenpunkts $x_i$ zum Cluster
+$c_j$ kann als Wahrscheinlichkeit in Abhängigkeit der Distanz $d_{ij} = |x_i - z_j|^2$
+ zum Zentrum $z_j$ ausgedrückt werden.
+\begin{equation}
+    P(c_j | x_i) = \frac{(\frac{1}{d_{ij}})^{\frac{1}{b-1}}}{\sum_{r=1}^k (\frac{1}{d_{ir}})^{\frac{1}{b-1}}}
+\end{equation}
+$b \in \mathbb{R}_{\geq1}$ ist ein frei zu wählender Parameter. Neu berechnung
+der Zentren:
+\begin{equation}
+    z_j = \frac{\sum_{i=1}^n [P(z_j|x_i)]^b \cdot x_i}{\sum_{i=1}^n [P(z_j | x_i)]^b}
+\end{equation}
+\mparagraph{Hierarchische Ballungsanalyse}
+\begin{itemize}
+    \item k-means nur ''flache'' datenbeschreibung
+    \item Cluster können Sub-Cluster und Sub-sub-cluster besitzten\\
+    $\Rightarrow$ Iteratives Vereinen von SubClustern zu größeren Clustern.
+    \item Ergebnisse können durch ein Dendrogramm beschrieben werden.
+    \item Anwendungsfall: Einordnung von Schrauben.
+\end{itemize}
+\mparagraph{Agglomerative Hierarchical Clustering (AHC)}
+Hierarchisches Clusterverfahren. Wähle Clusterdistanz-Schwellwert $t \in \mathbb{R}$
+und minimale Cluster Anzahl $k \in \mathbb{R}$. Wähle Distanzmass für Cluster (
+z.B nearest neighbour, farest neighbour etc.)
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \State $c \leftarrow k$ \# Minimale Anzahl an Clustern
+        \State $c' \leftarrow n$ \# Anzahl der Datenpunkte
+        \State $D_i = \{x_i\}$ \# Weise jedem Punkt eigenes Clusterzentrum zu
+        \State \textbf{DO}
+        \IndState $c' = c' -1$
+        \IndState Find nearest Cluster $D_i, D_j$
+        \IndState Merge $D_i$ and $D_j$
+        \State \textbf{UNTIL} $c = c'$ \textbf{OR} $d(D_i,D_j) > t$
+
+        \caption{AHC}
+    \end{algorithmic}
+
+\end{algorithm}
+
+\mparagraph{Begriffliche Ballung}
+Bei klassischen Verfahren erfolgt die Definition der Ähnlichkeit auf Basis
+einer meist numerischen Ähnlichkeitsfunktion. Begriffliche Ballungsalgorithmen
+generiegen Konzeptbeschreibungen.
+
+\mparagraph{COBWEB}
+Algorithmus zur begrifflichen Ballung. Lernen durch inkrementelles Aufbauen und
+Anpassen eines Strukturbaumes. Jede Verzweigung innerhalb des baumes steht für
+ eine Einteilung der Unterbäume in verschiedenen Kategorien.\\
+ Blätter sind die speziellsten Begriffe.\\Nominale Attribute sind gestattet\\
+Auswahl geeigneter Kategorien:
+\begin{itemize}
+    \item Maß für die Ballungsnützlichkeit (category untility)
+    \item Eine Ballung $c_j$ besitzt eine hohe Nützlichkeit wenn:
+    \begin{itemize}
+        \item Falls $x$ zu $c_i$ gehört, die Attributwerte von $x$ mit hoher
+        Wahrscheinlichkeit vorhersagen kann ($p(v|c)$, predictability/Vorhersagbarkeit)
+        \item Falls die Attributwerte $v$ von $x$ gegeben sind, die Zugehörigkeit
+        von $x$ zu $c_i$ mit hoher Wahrscheinlichkeit bestimmt werden kann (
+        $p(c|v)$ predictiveness/Vohersagekraft)
+    \end{itemize}
+\end{itemize}
+Es soll die Inter-Klassenähnlichkeit minimiert und die Intra-Klassenähnlichkeit
+maximiert werden.\\
+Man erhält ein Maß für die Vorhersagekraft und die Vorhersagbarkeit jedes
+Attributs in einem Konzept (Category Utility)
+\begin{displaymath}
+    \text{CU} = \sum_{k=1}^K \sum_{i=1}^I \sum_{j=1}^{J(i)} P(A_i = V_{ij}) \cdot P(A_i = V_ij | C_k) \cdot P(C_k | A_i = V_{ij})
+\end{displaymath}
+\begin{itemize}
+    \item $C_1,\dots,Ck$: Partiionierung in Unterkonzepte
+    \item $K$: Anzahl der Klassen (Nachfolgeknoten)
+    \item $I$: Anzahl der Attribute
+    \item $J(i)$: Anzahl der Attributwerte des i-ten Attribut
+    \item $V_{ij}$: j-ter möglicher Wert für Attribut i
+    \item $P(A_i = V_{ij} | C_k)$ Predictability eines Attributwert
+    \item $P(C_k | A_i = V_{ij})$ predictiveness eines Attributwert
+\end{itemize}

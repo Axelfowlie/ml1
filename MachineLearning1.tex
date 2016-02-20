@@ -1,0 +1,55 @@
+\documentclass{report}
+% Autor: Roland Bless 1996-2007, bless <at> tm.uka.de
+% ----------------------------------------------------------------
+% Diplomarbeit - Hauptdokument
+% ----------------------------------------------------------------
+%%
+%% $Id: diplarb.tex 35 2007-01-23 10:56:12Z bless $
+%%
+% wissdoc Optionen: draft, relaxed, pdf --> siehe wissdoc.cls
+% ------------------------------------------------------------------
+% Weitere packages: (Dokumentation dazu durch "latex <package>.dtx")
+\usepackage{bibgerm}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{algpseudocode,algorithm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=15mm,rmargin=20mm}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\newcommand{\IndState}[1][1]{\State\hspace{10mm}}
+\newcommand{\mparagraph}[1]{\paragraph{#1} \mbox{}\\}
+
+%%%%%%%%%%%%%% includeonly %%%%%%%%%%%%%%%%%%%
+% Es werden nur die Teile eingebunden, die hier
+% aufgefuehrt sind!
+%\includeonly{%
+%}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\graphicspath{{pic/}}
+
+\begin{document}
+\tableofcontents
+\include{Allgemein}
+\include{InduktivesLernen}
+\include{ReinforcementLearning}
+\include{Lerntheorie}
+\include{NN}
+\include{SVM}
+\include{UnueberwachtesLernen}
+\include{BayesLernen}
+\include{DecisionTree}
+\include{HMM}
+\include{MLN}
+\include{InstanzbasiertesLernen}
+\include{DeduktivesLernen}
+\include{evoalgo}
+\include{Einordnungskriterien}
+
+
+\end{document}

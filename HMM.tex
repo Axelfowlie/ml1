@@ -1,0 +1,96 @@
+\chapter{Hidden Markov Modell}
+
+\mparagraph{Markov Bedingung}
+Beschränkter Horizont. Die Wahrscheinlichkeit eine Zustand zu erreichen
+ist ur von seinem direkten Vorgängerzustand abhängig.
+
+\begin{displaymath}
+    P(q_{t+1}=S_{t+1}|q_t = S_t, q_{t-1} = S_{t-1}, \dots) =
+    P(q_{t+1}=S_{t+1}|q_t = S_t)
+\end{displaymath}
+
+\mparagraph{Hidden Markov Modell, HMM}
+
+\begin{itemize}
+    \item $S = \{S_1, \dots, S_n\}$: Menge der Zustände
+    \item $V = \{v_1, \dots, v_m\}$: Menge der Ausgabezeiche
+    \item $A \in [0,1]^{n \times n} = (a_{ij})$: Übergangsmatrix,
+          die die Wahrscheinlichkeit von Zustand $i$ in Zustand $j$ zu kommen
+          beinhaltet
+    \item $B = (b_{ik})$ die Emissionswahrscheinlichkeit $v_k$ im Zustand
+          $S_i$ zu beobachten
+    \item $\Pi = (\pi_i) = P(q_1 = i)$: Die Startverteilung. $\pi_i$ ist die
+          Wahrscheinlichkeit dass $S_i$ der erste Zustand ist.
+    \item $q_t$ ist der Zustand zum Zeitpunkt $t$.
+\end{itemize}
+
+
+\mparagraph{3 grundlegenden Probleme}
+\begin{itemize}
+    \item \textbf{P1 Evaluierungsproblem}: Wie groß ist die Wahrscheinlichkeit
+    $P(o|\lambda)$ einer Sequenz $o = o_1,o_2,\dots,o_T$ bei gegebener HMM
+    $\lambda$
+    \begin{itemize}
+        \item Lösung:Vorwärtsalgorithmus
+    \end{itemize}
+    \item \textbf{P2 Dekodierungsproblem}: Finden der wahrscheinlichsten
+    Zustandssequenz $s_1,\dots,s_T$ bei gegebener Sequenz von Beobachtungen
+    $o = o_1,o_2,\dots,o_T$
+    \begin{itemize}
+        \item Lösung: Backwardsalgorithmus, Viterbi Algorithmus
+    \end{itemize}
+    \item \textbf{P3 Optimierungsproblem}: Optimieren der Modellparameter
+    \begin{itemize}
+        \item Lösung: Baumwelch Algorithmus
+    \end{itemize}
+\end{itemize}
+
+\mparagraph{Vorwärtsalgorithmus}
+
+Die Variablen $\alpha_t(i) = P(o_1 o_2 \dots o_t; q_t = s_i | \lambda)$ gibt
+die Wahrscheinlichkeit an zum Zeitpunkt $t \in 1 \leq t \leq T$ im Zustand $s_i
+\in S$ zu sein und die Sequenz $o_1 o_2 \dots o_t$ beobachtet zu haben. Diese
+werden rekursiv berechnet. Dabei beginnt man mit Zeitpunkt $t=1$, berechnet
+die Wahrscheinlichkeit $o_1$ beobachtet zu haben für jeden Zustand.
+
+\mparagraph{Rückwärtssalgorithmus}
+Gegeben sei ein Wort $o = o_1 o_2 \dots o_T \in V^*$ der Backward-Algorithmus
+berechnet nun $P(o|\lambda)$, also die Wahrscheinlichkeit im vorhandenen Modell
+$\lambda$ tatsächlich die Beobachtung $o$ zu machen. \\
+
+Dafür werden die ''Backward-Variablen'' $\beta_t(i)$ verwendet, sie bezeichnen
+die Wahrscheinlichkeit das Suffix $o_{t+1} o_{t+2} \ldots o_T$ zu beobachten,
+falls das HMM zum Zeitpunkt $1 \le t \le T$ im Zustand $s_i \in S$ gewesen ist:
+\begin{displaymath}
+    \beta_t(i) = P(o_{t+1} o_{t+2} \dotsc o_T | q_t = s_i; \lambda)
+\end{displaymath}
+
+\mparagraph{Viterbi Algorithmus}
+Geht genauso vor, wie der Vorwärtsalgorithmus. Statt der Summe aller
+Übergangswahrscheinlichkeiten wird das Maximum gewählt. Liefert somit
+die maximale Wahrscheinlichkeit, mit der ein Zustand erreicht wird.
+
+
+\mparagraph{Baum Welch Algorithmus}
+
+Gegeben sei eine Trainigssequenz $O_{\text{Training}}$ und Hypothesenraum
+für Modelle $\lambda = \{S,V,A,B\Pi\}$. \\
+Gesucht ist ein Modell $\bar{\lambda} = \argmax_{\lambda} P(O|\lambda)$
+
+\begin{enumerate}
+    \item Beginne mit zufälligem Modell $\lambda$ und berechne
+    $P(O_{\text{training}}|\lambda)$
+    \item Bestimme die erwartete Anzahl von Zustandsübergängen (aus und
+    zwischen Zuständen) und Symbolausgaben
+    \item Neuschätzung der Übergangs und Emissionswahrscheinlichkeiten:
+    Berechnug eines neuen Modells. Häufiger benutze Übergänge und
+    Ausgabesymbole erhalten höhere Wahrscheinlichkeiten als weniger genutze.
+    \item Iteriere so lange bis (lokales) Maximum erreicht ist.
+\end{enumerate}
+
+\mparagraph{Arten von HMM}
+\begin{itemize}
+    \item \textbf{Ergodisches Modell}: Vollverbundene Topologie incl. Schleifen.
+    \item \textbf{Links nach Rechts modell, Bakis Modell}: Eine links-nach-rechts
+    Topologie, bei der max. ein Zustand übersprungen werden kann.
+\end{itemize}
